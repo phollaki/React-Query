@@ -1,10 +1,14 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+/** @jsxImportSource theme-ui */
+import { ThemeProvider } from 'theme-ui'
+import { theme } from '../themes/theme'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { persistQueryClient } from 'react-query/persistQueryClient-experimental'
 import { createWebStoragePersistor } from 'react-query/createWebStoragePersistor-experimental'
 import Header from '../components/header'
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,9 +32,11 @@ if (typeof window !== 'undefined') {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-        <Header />
-        <Component {...pageProps} />
-        <ReactQueryDevtools />
+        <ThemeProvider theme={theme}>
+          <Header />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   )
 }

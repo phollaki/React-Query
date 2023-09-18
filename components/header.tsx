@@ -8,7 +8,7 @@ function Header() {
         <img
           className="h-44 w-44 cursor-pointer"
           loading="lazy"
-          src="https://react-query.tanstack.com/_next/static/images/logo-7a7896631260eebffcb031765854375b.svg"
+          src="https://ucarecdn.com/39dea013-fbb2-486d-b16b-bf2e1cc43af3/"
         />
       </Link>
       <div className="flex space-x-20">

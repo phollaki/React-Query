@@ -7,9 +7,17 @@ export const theme: Theme = {
     monospace: 'Menlo, monospace',
   },
   colors: {
-    text: '#000',
-    background: '#fff',
-    primary: '#33e',
+    primary:{
+      text: '#000',
+      background: '#fff',
+    }
   },
-
+  buttons:{
+    primary:{
+      color: 'white',
+      backgroundColor:'black',
+      borderRadius: '999px',
+      p:"10px",
+    }
+  }
 }

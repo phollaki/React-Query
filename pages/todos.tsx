@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import { Product } from './product'
 
 function Todos() {
   const [clicked, setClicked] = useState(false)
-  const todos = useQuery('todos', () => [],{
+  const todos = useQuery({
+    queryFn: () => [],
+    queryKey: ['todos'],
+    staleTime: Infinity
   })
   const products = useQuery('products', ()=>[],{
     initialData: () => [],

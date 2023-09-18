@@ -1,56 +1,87 @@
 import React, { useRef, FormEvent } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx, Button, Box, Paragraph, Input } from 'theme-ui';
+
+const styles = {
+  'button':{
+    variant:"buttons.primary",
+  },
+  index:{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  } as any,
+  form: {
+    mt: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *': {
+      margin: '0.5rem',
+    }
+  } as any,
+  input:{
+    mt:'0.5rem',
+    border: '1px solid grey',
+    p: '0.6rem',
+    '&:focus': {
+      outline: 'none',
+    }
+  }
+}
 
 export default function Home() {
-  const todos = useQuery('todos', () => [], {
-    initialData: ['todo1', 'todo2'],
-    staleTime: 5000,
-    refetchOnWindowFocus:true,
+  const todos = useQuery({
+    queryFn: () => [],
+    queryKey: ['todos'],
+    staleTime: Infinity
+    // initialData: ['todo1', 'todo2'],
+    // staleTime: 5000,
+    // refetchInterval: 5000,
+    // refetchOnWindowFocus:true,
   })
 
   const todoRef = useRef<HTMLInputElement>(null)
+
   const queryClient = useQueryClient()
 
-  const postTodo = (e: FormEvent<HTMLFormElement>) => {
+  const postTodo = (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault()
-    if (todoRef.current) {
+    if (todoRef.current && todoRef.current.value) {
       queryClient.setQueryData('todos', [...todos.data!, todoRef.current.value])
     }
   }
   const clearTodos = () => {
-    if (todoRef.current) {
-      queryClient.setQueryData('todos', [])
-    }
+      queryClient.setQueryData('todos', ()=>[])
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-start py-20">
+    <Box sx={styles.index}>
       {todos.data?.map((todo, i) => (
         <p key={i}>{todo}</p>
       ))}
-      <form className="flex flex-col items-center space-y-6" onSubmit={(e) => postTodo(e)}>
-        <input
-          className="mt-5 border p-2 placeholder:text-gray-500 focus:outline-none"
+      <Box as="form" sx={styles.form} onSubmit={(e) => postTodo(e)}>
+        <Input
+          sx={styles.input}
           ref={todoRef}
           placeholder="your new todo"
         />
 
-        <div className="space-x-2">
-          <button
-            type="submit"
-            className="mt-5 rounded-lg bg-black p-2 text-white"
-          >
+        <Box>
+          <Button type="submit">
             Add new todo
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => clearTodos()}
-            className="mt-5 rounded-lg bg-black p-2 text-white"
+            type="submit"
           >
             Remove todos
-          </button>
-        </div>
-        <p>Items in the todo list {todos.data?.length}</p>
-      </form>
-    </div>
+          </Button>
+        </Box>
+        <Paragraph>Items in the todo list {todos.data?.length}</Paragraph>
+      </Box>
+    </Box>
   )
 }
