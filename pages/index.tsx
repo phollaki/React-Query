@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useRef, FormEvent } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 /** @jsxRuntime classic */
@@ -32,6 +33,7 @@ const styles = {
   }
 }
 
+
 export default function Home() {
   const todos = useQuery({
     queryFn: () => [],
@@ -59,6 +61,9 @@ export default function Home() {
 
   return (
     <Box sx={styles.index}>
+       <Head>
+        <title>React Query</title>
+      </Head>
       {todos.data?.map((todo, i) => (
         <p key={i}>{todo}</p>
       ))}
@@ -67,6 +72,7 @@ export default function Home() {
           sx={styles.input}
           ref={todoRef}
           placeholder="your new todo"
+          data-cy="todo-input"
         />
 
         <Box>
@@ -80,7 +86,20 @@ export default function Home() {
             Remove todos
           </Button>
         </Box>
-        <Paragraph>Items in the todo list {todos.data?.length}</Paragraph>
+
+
+        {/* Non-nested component */}
+        <Paragraph>Items in the todo list <Paragraph data-e2e="todo-length">{todos.data?.length}</Paragraph></Paragraph>
+
+        {/* Nested component */}
+        <Box>
+          <Box>
+            <Box>
+              <Paragraph>Items in the todo list <Paragraph data-e2e="nested-todo-length">{todos.data?.length}</Paragraph></Paragraph>
+            </Box>
+          </Box>
+        </Box>
+
       </Box>
     </Box>
   )
